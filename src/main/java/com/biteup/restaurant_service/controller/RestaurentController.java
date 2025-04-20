@@ -1,6 +1,5 @@
 package com.biteup.restaurant_service.controller;
 
-
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -24,12 +23,12 @@ import lombok.RequiredArgsConstructor;
 public class RestaurentController {
 
     private final RestaurantService restaurantService;
+
     @PostMapping
     public ResponseEntity<RestaurentResponseDTO> createProducts(
-        @RequestBody RestaurentRequestDTO req
-    ) {
+            @RequestBody RestaurentRequestDTO req) {
         RestaurentResponseDTO res = restaurantService.createRestaurant(req);
-        if(res.getError() != null){
+        if (res.getError() != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
         } else {
             return ResponseEntity.status(HttpStatus.CREATED).body(res);
@@ -37,9 +36,8 @@ public class RestaurentController {
     }
 
     @GetMapping
-    public List<Restaurant> getAllProducts(){
+    public List<Restaurant> getAllProducts() {
         return restaurantService.getAllRestaurants();
     }
-    
-}
 
+}
