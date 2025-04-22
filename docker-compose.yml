@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   mongodb:
     image: mongo:7.0.5
@@ -10,6 +12,18 @@ services:
       MONGO_INITDB_DATABASE: restaurantdb
     volumes:
       - mongodb_data:/data/db
+
+  javaapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: restaurant-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongodb
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://admin:admin@mongodb:27017/restaurantdb?authSource=admin
 
 volumes:
   mongodb_data:
