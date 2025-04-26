@@ -8,4 +8,6 @@ import com.biteup.restaurant_service.model.Restaurant;
 
 public interface RestaurantRepository extends MongoRepository<Restaurant, String>{
     Optional<Restaurant> findByEmail(String email);
+
+    Optional<Restaurant> findByName(String restaurantName);
 }
