@@ -35,47 +35,13 @@ public class RestaurentController {
       return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
   }
-
-  @GetMapping("/check-profile/{restaurantEmail}")
-  public ResponseEntity<Boolean> checkIfRestaurantNeedsForm(@PathVariable String restaurantEmail) {
-      Restaurant restaurant = restaurantService.getRestaurentByEmail(restaurantEmail);
-  
-      boolean needsForm = false;
-  
-      // Check if important fields are missing
-      if (restaurant.getName() == null || restaurant.getName().isEmpty()
-              || restaurant.getPhoneNumber() == null || restaurant.getPhoneNumber().isEmpty()
-              || restaurant.getAddress() == null || restaurant.getAddress().isEmpty()
-              || restaurant.getPhoneNumber() == null || restaurant.getPhoneNumber().isEmpty()
-              || restaurant.getLocation() == null
-              || restaurant.getLocation().getLat() == 0.0
-              || restaurant.getLocation().getLng() == 0.0) {
-          needsForm = true;
-      }
-  
-      return ResponseEntity.ok(needsForm);
+  @GetMapping("/checkRestaurant/{email}")
+  public ResponseEntity<Boolean> checkIfRestaurantExists(@PathVariable String email) {
+      System.out.println("Checking for email: " + email); // Debug print
+      boolean exists = restaurantService.checkIfRestaurantExists(email);
+      return ResponseEntity.ok(exists);
   }
-
-  // if check by restaurant name
-//   @GetMapping("/check-profile/{restaurantName}")
-// public ResponseEntity<Boolean> checkIfRestaurantNeedsForm(@PathVariable String restaurantName) {
-//     Restaurant restaurant = restaurantService.getRestaurentByName(restaurantName);
-
-//     boolean needsForm = false;
-
-//     // Check if important fields are missing
-//     if (restaurant.getPhoneNumber() == null || restaurant.getPhoneNumber().isEmpty()
-//             || restaurant.getAddress() == null || restaurant.getAddress().isEmpty()
-//             || restaurant.getLocation() == null
-//             || restaurant.getLocation().getLat() == 0.0
-//             || restaurant.getLocation().getLng() == 0.0) {
-//         needsForm = true;
-//     }
-
-//     return ResponseEntity.ok(needsForm);
-// }
-
-
+  
   @GetMapping
   public List<Restaurant> getAllProducts() {
     return restaurantService.getAllRestaurants();

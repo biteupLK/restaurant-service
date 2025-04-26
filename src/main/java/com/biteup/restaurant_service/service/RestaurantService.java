@@ -58,14 +58,10 @@ public class RestaurantService {
       );
   }
 
-  // if check by resturant name
-//   public Restaurant getRestaurentByName(String restaurantName) {
-//     return restaurantRepository
-//         .findByName(restaurantName)
-//         .orElseThrow(() ->
-//             new RuntimeException("Restaurant not found for name: " + restaurantName)
-//         );
-// }
+  public boolean checkIfRestaurantExists(String email) {
+    return restaurantRepository.countByEmail(email) > 0;
+}
+
 
   public RestaurentResponseDTO updateRestaurant(String id, RestaurentRequestDTO req) {
     Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
