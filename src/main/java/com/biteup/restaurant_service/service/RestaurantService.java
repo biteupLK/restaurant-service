@@ -57,6 +57,16 @@ public class RestaurantService {
         new RuntimeException("Restaurant not found for id: " + restaurantEmail)
       );
   }
+
+  // if check by resturant name
+//   public Restaurant getRestaurentByName(String restaurantName) {
+//     return restaurantRepository
+//         .findByName(restaurantName)
+//         .orElseThrow(() ->
+//             new RuntimeException("Restaurant not found for name: " + restaurantName)
+//         );
+// }
+
   public RestaurentResponseDTO updateRestaurant(String id, RestaurentRequestDTO req) {
     Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
 
