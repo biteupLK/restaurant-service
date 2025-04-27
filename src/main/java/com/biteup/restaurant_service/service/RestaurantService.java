@@ -52,56 +52,52 @@ public class RestaurantService {
 
   public Restaurant getRestaurentByEmail(String restaurantEmail) {
     return restaurantRepository
-      .findByEmail(restaurantEmail)
-      .orElseThrow(() ->
-        new RuntimeException("Restaurant not found for id: " + restaurantEmail)
-      );
+        .findByEmail(restaurantEmail)
+        .orElseThrow(() -> new RuntimeException("Restaurant not found for id: " + restaurantEmail));
   }
 
   public boolean checkIfRestaurantExists(String email) {
     return restaurantRepository.countByEmail(email) > 0;
-}
-
+  }
 
   public RestaurentResponseDTO updateRestaurant(String id, RestaurentRequestDTO req) {
     Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
 
     if (optionalRestaurant.isPresent()) {
-        Restaurant restaurant = optionalRestaurant.get();
-        restaurant.setName(req.getName());
-        restaurant.setDescription(req.getDescription());
-        restaurant.setEmail(req.getEmail());
-        restaurant.setPhoneNumber(req.getPhoneNumber());
-        restaurant.setPlaceId(req.getPlaceId());
-        restaurant.setCity(req.getCity());
-        restaurant.setState(req.getState());
-        restaurant.setZipCode(req.getZipCode());
-        restaurant.setAddress(req.getAddress());
+      Restaurant restaurant = optionalRestaurant.get();
+      restaurant.setName(req.getName());
+      restaurant.setDescription(req.getDescription());
+      restaurant.setEmail(req.getEmail());
+      restaurant.setPhoneNumber(req.getPhoneNumber());
+      restaurant.setPlaceId(req.getPlaceId());
+      restaurant.setCity(req.getCity());
+      restaurant.setState(req.getState());
+      restaurant.setZipCode(req.getZipCode());
+      restaurant.setAddress(req.getAddress());
 
-        Location location = new Location();
-        location.setLat(req.getLatitude());
-        location.setLng(req.getLongitude());
-        restaurant.setLocation(location);
+      Location location = new Location();
+      location.setLat(req.getLatitude());
+      location.setLng(req.getLongitude());
+      restaurant.setLocation(location);
 
-        restaurantRepository.save(restaurant);
+      restaurantRepository.save(restaurant);
 
-        return RestaurentResponseDTO.builder()
-                .message("Update successful")
-                .build();
+      return RestaurentResponseDTO.builder()
+          .message("Update successful")
+          .build();
     } else {
-        return RestaurentResponseDTO.builder()
-                .error("Restaurant not found with id: " + id)
-                .build();
+      return RestaurentResponseDTO.builder()
+          .error("Restaurant not found with id: " + id)
+          .build();
     }
-}
+  }
 
-
-    public boolean deleteRestaurant(String id) {
-        Optional<Restaurant> restaurant = restaurantRepository.findById(id);
-        if (restaurant.isPresent()) {
-            restaurantRepository.deleteById(id);
-            return true;
-        }
-        return false;
+  public boolean deleteRestaurant(String id) {
+    Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+    if (restaurant.isPresent()) {
+      restaurantRepository.deleteById(id);
+      return true;
     }
+    return false;
+  }
 }
