@@ -26,8 +26,7 @@ public class RestaurentController {
 
   @PostMapping("/create")
   public ResponseEntity<RestaurentResponseDTO> createProducts(
-    @RequestBody RestaurentRequestDTO req
-  ) {
+      @RequestBody RestaurentRequestDTO req) {
     RestaurentResponseDTO res = restaurantService.createRestaurant(req);
     if (res.getError() != null) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
@@ -35,13 +34,13 @@ public class RestaurentController {
       return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
   }
+
   @GetMapping("/checkRestaurant/{email}")
   public ResponseEntity<Boolean> checkIfRestaurantExists(@PathVariable String email) {
-      System.out.println("Checking for email: " + email); // Debug print
-      boolean exists = restaurantService.checkIfRestaurantExists(email);
-      return ResponseEntity.ok(exists);
+    boolean exists = restaurantService.checkIfRestaurantExists(email);
+    return ResponseEntity.ok(exists);
   }
-  
+
   @GetMapping
   public List<Restaurant> getAllProducts() {
     return restaurantService.getAllRestaurants();
@@ -49,32 +48,31 @@ public class RestaurentController {
 
   @GetMapping("/{restaurantEmail}")
   public ResponseEntity<Restaurant> getRestaurentByEmail(
-    @PathVariable String restaurantEmail
-  ) {
+      @PathVariable String restaurantEmail) {
     Restaurant restaurant = restaurantService.getRestaurentByEmail(
-      restaurantEmail
-    );
+        restaurantEmail);
     return ResponseEntity.ok(restaurant);
   }
-  @PutMapping("/{id}")
-    public ResponseEntity<RestaurentResponseDTO> updateRestaurant(
-            @PathVariable String id,
-            @RequestBody RestaurentRequestDTO requestDTO) {
-        RestaurentResponseDTO res = restaurantService.updateRestaurant(id, requestDTO);
-        if (res.getError() != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-        } else {
-            return ResponseEntity.ok(res);
-        }
-    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteRestaurant(@PathVariable String id) {
-        boolean deleted = restaurantService.deleteRestaurant(id);
-        if (deleted) {
-            return ResponseEntity.ok("Restaurant deleted successfully.");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Restaurant not found.");
-        }
+  @PutMapping("/{id}")
+  public ResponseEntity<RestaurentResponseDTO> updateRestaurant(
+      @PathVariable String id,
+      @RequestBody RestaurentRequestDTO requestDTO) {
+    RestaurentResponseDTO res = restaurantService.updateRestaurant(id, requestDTO);
+    if (res.getError() != null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+    } else {
+      return ResponseEntity.ok(res);
     }
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<String> deleteRestaurant(@PathVariable String id) {
+    boolean deleted = restaurantService.deleteRestaurant(id);
+    if (deleted) {
+      return ResponseEntity.ok("Restaurant deleted successfully.");
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Restaurant not found.");
+    }
+  }
 }
