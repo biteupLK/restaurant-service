@@ -31,3 +31,59 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# IDE files
+/.idea/
+/*.iml
+*.ipr
+*.iws
+*.class
+
+# VSCode
+.vscode/
+
+# Maven
+/target/
+/pom.xml.tag
+/pom.xml.releaseBackup
+/pom.xml.versionsBackup
+/logs/
+
+# Gradle
+.gradle/
+/build/
+
+# Node (if you have frontend code here)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Application specific
+src/main/resources/biteup-key.json
+
+# Other sensitive files
+*.env
+*.key
+*.pem
+*.p12
+*.crt
+
+# Docker
+**/docker-compose.override.yml
+**/.env
