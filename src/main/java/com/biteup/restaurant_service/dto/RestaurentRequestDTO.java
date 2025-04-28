@@ -24,8 +24,9 @@ public class RestaurentRequestDTO {
     private String city;
     private String state;
     private String zipCode;
-    private Object logo;
+    // private Object logo;
     private Double latitude;
     private Double longitude;
+    private String image;
 
 }

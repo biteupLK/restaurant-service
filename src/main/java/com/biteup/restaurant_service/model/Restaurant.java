@@ -27,7 +27,11 @@ public class Restaurant {
     private String city;
     private String state;
     private String zipCode;
-    private Object logo;
+    // private Object logo;
+
+    private String image;      // for storing image path
+private String signedUrl;  // for returning signed URL (you can mark it @Transient if you don't want it stored in DB)
+
 
     private Location location;
 }

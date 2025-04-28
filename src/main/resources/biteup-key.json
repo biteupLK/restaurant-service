@@ -1,0 +1,14 @@
+{
+    "type": "service_account",
+    "project_id": "biteup-455302",
+    "private_key_id": "f573eb862e1b110de22743dfea9016f55dd7f20f",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDysb5pnIBANshK\nocaolGBRivKC1ZzUXKLlja0N8Qfpc3wLbCMt9eIobR0Gl6V1HUw/tAbKkJO4b2iI\nY10KeYkkgusf/LlrewwpTbdgkUkIdnJ/BrEUzYlgbw6NDwvk+lIm2i9fgc/uwzUF\nmIss3UIeEwSvtzUXKDkk7nLrjKlOo/m0blY8dV1DGPqH1V8j9Ou+pz5qIKOymmFG\nOV294t8EgFV4jBwYI8YgD3ZoIwjdFy0+Q4E8rsUlhovf7bZ8B0AtDu9OysD0gwbv\nNd9IC3wXyp5UzuzwKUzAkr6y0F+ItJ59Hf4ldvq3iAb/h6IGmqiJImph5aUuKYOP\niKZgC/FjAgMBAAECggEAFSoxuYgabynX4cT7TCxUZ11qChroPboubT0jwGQqv83V\nyDE6sta5+F3mUB2IImSBsnSCuxuh+6L2R3P9jdz3fCWmrPgfO3j+9dh/NilgEyAx\nRVP8vBxd705VbdvID8SncW1JqwHpHkthI7HKlrOyVmkWLt9tU9hVfhuwDfa1tSkl\nh+PYBrUylCvcJYpXR5qkR5yguzp6HpOZWwEJQ3m5oO4YUvGpWQUaZnlq8nVhOgpf\nRc+Jn8wKmx6PdNyqMX9d2nMJ5FKc0NcdeJX56hIIlqaD8J0mDrP1DAflt1OHiXrJ\n7see9qHe8LpwgE01wt295NMGD8oKXs7IPbkyd+XrAQKBgQD8Ns2cpLsbXZkkz7Ss\nh+6nDHmskH2yRoEjGYx/Tq33yynBftCIYmyioh11Bp1Lh867t9Mmia9gofmJjyL+\nAY+Kuv7DLhtIi7MVkKdapj8O1OodlGSKcITTfU3HHtxfxntd5DxgpRb0/uKAA11Y\nG1dmMZGBSjjQehr7IDfoUHdhQQKBgQD2VlvHe7kBXWb54M6DSC2C2wwUeCzXZVUt\nZTb+qVyg/bAa/bwZ9w+z+raq0aL1Orl4DnrkB+DL9fTezoCHK5gT2FPh3JROLisB\naxA+GQlftBdNOGinEQk06Tm4hBnLZYy9nY9FAuuzyQIpTp/4CUQAYhiHvQq1Enxn\nry8M57LFowKBgB1ORN/hqDgKzSOg2s59UPaqFW0+sMxJMvIgItocC0zSl3x7PsHK\nJfNTwPZ7GUXQdu4K8wb0UqN4zqT0M82t4r7s8XM+ZT8ttFZaI4f97y/K/5UGTBRl\n9JkaYzIy3MpoJqeHQJi+NgeroifbvDnjm2ktc0nBlQ5sUbxCRxzAVM7BAoGBAKNI\nsQN0ljg6YlTF1/2bbVdsvQAgfJC2QZSan66EMrsgDYiGohWP95+0Uzq9RMhKib/z\n0S+vrSllOlAqD3YJxn95CHkRTljYL3d8MUMIM3d1l3B/MJd1KmYhJjqRjcuN35Gc\ni+gRvIzqc31P+ade9O1QGLR48Uz/GOldbNGgD5cDAoGANmM5sMxFoAuMR91ana4c\nqFp17q6jmGtvdd9hckzKb4MijFrsyRTbafkBQeu3zDztpNa8TSz0+e5u5vDnB7lb\nDGwidD7vx7+vPRypIKq+azU0jLV4niYtYg77kltudH+c3Gbi+HJtzkoziiIg//WS\n8D25XROcaGNNnai73s0olZ8=\n-----END PRIVATE KEY-----\n",
+    "client_email": "akila-manujith@biteup-455302.iam.gserviceaccount.com",
+    "client_id": "113444867157007442301",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/akila-manujith%40biteup-455302.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+  }
+  
