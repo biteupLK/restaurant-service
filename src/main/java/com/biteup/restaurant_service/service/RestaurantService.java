@@ -56,10 +56,6 @@ public class RestaurantService {
         .orElseThrow(() -> new RuntimeException("Restaurant not found for id: " + restaurantEmail));
   }
 
-  public boolean checkIfRestaurantExists(String email) {
-    return restaurantRepository.countByEmail(email) > 0;
-  }
-
   public RestaurentResponseDTO updateRestaurant(String id, RestaurentRequestDTO req) {
     Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
 
@@ -100,4 +96,12 @@ public class RestaurantService {
     }
     return false;
   }
+
+  public boolean checkIfRestaurantExists(String email) {
+    return restaurantRepository.findByEmail(email).isPresent();
+  }
+
+  // public boolean checkIfRestaurantExists(String email) {
+  // return restaurantRepository.countByEmail(email) > 0;
+  // }
 }
