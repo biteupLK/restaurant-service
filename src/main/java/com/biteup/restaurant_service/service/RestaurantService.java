@@ -7,7 +7,6 @@ import com.biteup.restaurant_service.model.Restaurant;
 import com.biteup.restaurant_service.repository.RestaurantRepository;
 import java.util.List;
 import java.util.Optional;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,10 @@ public class RestaurantService {
 
   public RestaurentResponseDTO createRestaurant(RestaurentRequestDTO req) {
     Restaurant restaurant = new Restaurant();
+
+    if (req.getName() == null) {
+      return new RestaurentResponseDTO(null, "Restaurant Name is Null");
+    }
     restaurant.setName(req.getName());
     restaurant.setDescription(req.getDescription());
     restaurant.setEmail(req.getEmail());
@@ -52,15 +55,20 @@ public class RestaurantService {
 
   public Restaurant getRestaurentByEmail(String restaurantEmail) {
     return restaurantRepository
-        .findByEmail(restaurantEmail)
-        .orElseThrow(() -> new RuntimeException("Restaurant not found for id: " + restaurantEmail));
+      .findByEmail(restaurantEmail)
+      .orElseThrow(() ->
+        new RuntimeException("Restaurant not found for id: " + restaurantEmail)
+      );
   }
 
   public boolean checkIfRestaurantExists(String email) {
     return restaurantRepository.countByEmail(email) > 0;
   }
 
-  public RestaurentResponseDTO updateRestaurant(String id, RestaurentRequestDTO req) {
+  public RestaurentResponseDTO updateRestaurant(
+    String id,
+    RestaurentRequestDTO req
+  ) {
     Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
 
     if (optionalRestaurant.isPresent()) {
@@ -82,13 +90,9 @@ public class RestaurantService {
 
       restaurantRepository.save(restaurant);
 
-      return RestaurentResponseDTO.builder()
-          .message("Update successful")
-          .build();
+      return new RestaurentResponseDTO("Update Successfully", null);
     } else {
-      return RestaurentResponseDTO.builder()
-          .error("Restaurant not found with id: " + id)
-          .build();
+      return new RestaurentResponseDTO("Update Successfully", null);
     }
   }
 
