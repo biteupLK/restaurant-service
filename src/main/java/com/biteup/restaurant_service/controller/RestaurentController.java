@@ -4,9 +4,13 @@ import com.biteup.restaurant_service.dto.RestaurentRequestDTO;
 import com.biteup.restaurant_service.dto.RestaurentResponseDTO;
 import com.biteup.restaurant_service.model.Restaurant;
 import com.biteup.restaurant_service.service.RestaurantService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/restaurant")
@@ -24,10 +30,17 @@ public class RestaurentController {
 
   private final RestaurantService restaurantService;
 
-  @PostMapping("/create")
+  @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<RestaurentResponseDTO> createProducts(
-      @RequestBody RestaurentRequestDTO req) {
-    RestaurentResponseDTO res = restaurantService.createRestaurant(req);
+      @RequestPart("restaurant") String restaurantJson,
+      @RequestPart("image") MultipartFile image) throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    RestaurentRequestDTO req = objectMapper.readValue(
+      restaurantJson,
+        RestaurentRequestDTO.class);
+
+    RestaurentResponseDTO res = restaurantService.createRestaurant(req, image);
     if (res.getError() != null) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     } else {
@@ -40,6 +53,7 @@ public class RestaurentController {
     boolean exists = restaurantService.checkIfRestaurantExists(email);
     return ResponseEntity.ok(exists);
   }
+  
 
   @GetMapping
   public List<Restaurant> getAllProducts() {
@@ -75,4 +89,13 @@ public class RestaurentController {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Restaurant not found.");
     }
   }
+
+  @GetMapping("/getSignedUrl/{email}")
+  public ResponseEntity<Restaurant> getSignedUrl(@PathVariable String email){
+    Restaurant restaurant = restaurantService.getRestaurantByEmailImg(email);
+    return ResponseEntity.ok(restaurant);
+  }
+
+
+
 }
