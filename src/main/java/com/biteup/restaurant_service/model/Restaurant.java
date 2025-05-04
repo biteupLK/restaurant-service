@@ -30,4 +30,7 @@ public class Restaurant {
     private Object logo;
 
     private Location location;
+    private String image;
+    private String signedUrl;
+
 }
