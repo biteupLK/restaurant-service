@@ -86,9 +86,9 @@ public class RestaurentController {
 
 
   
-  @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteRestaurant(@PathVariable String id) {
-    boolean deleted = restaurantService.deleteRestaurant(id);
+  @DeleteMapping("/{email}")
+  public ResponseEntity<String> deleteRestaurant(@PathVariable String email) {
+    boolean deleted = restaurantService.deleteRestaurant(email);
     if (deleted) {
       return ResponseEntity.ok("Restaurant deleted successfully.");
     } else {

@@ -32,7 +32,6 @@ public class RestaurantService {
   private final String bucketName;
   private final OkHttpClient httpClient = new OkHttpClient();
 
-
   public RestaurantService(
       RestaurantRepository restaurantRepository,
       ImageUploaderService imageUploaderService,
@@ -108,55 +107,53 @@ public class RestaurantService {
 
   public RestaurentResponseDTO updateRestaurant(String email, RestaurentRequestDTO req, MultipartFile imageFile) {
     try {
-        Optional<Restaurant> optionalRestaurant = restaurantRepository.findByEmail(email);
+      Optional<Restaurant> optionalRestaurant = restaurantRepository.findByEmail(email);
 
-        if (!optionalRestaurant.isPresent()) {
-            return RestaurentResponseDTO.builder()
-                    .error("Restaurant not found with id: " + email)
-                    .build();
-        }
-
-        Restaurant restaurant = optionalRestaurant.get();
-        restaurant.setName(req.getName());
-        restaurant.setDescription(req.getDescription());
-        restaurant.setPhoneNumber(req.getPhoneNumber());
-        restaurant.setPlaceId(req.getPlaceId());
-        restaurant.setCity(req.getCity());
-        restaurant.setState(req.getState());
-        restaurant.setZipCode(req.getZipCode());
-        restaurant.setAddress(req.getAddress());
-
-        // Update location
-        Location location = new Location();
-        location.setLat(req.getLatitude());
-        location.setLng(req.getLongitude());
-        restaurant.setLocation(location);
-
-        // Update image if new file is provided
-        if (imageFile != null && !imageFile.isEmpty()) {
-            String imageUrl = imageUploaderService.uploadToGcs(bucketName, imageFile);
-            restaurant.setImage(imageUrl);
-        }
-
-        restaurantRepository.save(restaurant);
-
+      if (!optionalRestaurant.isPresent()) {
         return RestaurentResponseDTO.builder()
-                .message("Update successful")
-                .build();
+            .error("Restaurant not found with id: " + email)
+            .build();
+      }
+
+      Restaurant restaurant = optionalRestaurant.get();
+      restaurant.setName(req.getName());
+      restaurant.setDescription(req.getDescription());
+      restaurant.setPhoneNumber(req.getPhoneNumber());
+      restaurant.setPlaceId(req.getPlaceId());
+      restaurant.setCity(req.getCity());
+      restaurant.setState(req.getState());
+      restaurant.setZipCode(req.getZipCode());
+      restaurant.setAddress(req.getAddress());
+
+      // Update location
+      Location location = new Location();
+      location.setLat(req.getLatitude());
+      location.setLng(req.getLongitude());
+      restaurant.setLocation(location);
+
+      // Update image if new file is provided
+      if (imageFile != null && !imageFile.isEmpty()) {
+        String imageUrl = imageUploaderService.uploadToGcs(bucketName, imageFile);
+        restaurant.setImage(imageUrl);
+      }
+
+      restaurantRepository.save(restaurant);
+
+      return RestaurentResponseDTO.builder()
+          .message("Update successful")
+          .build();
     } catch (Exception e) {
-        log.error("Error while updating restaurant: {}", e.getMessage());
-        return RestaurentResponseDTO.builder()
-                .error("System Error during update")
-                .build();
+      log.error("Error while updating restaurant: {}", e.getMessage());
+      return RestaurentResponseDTO.builder()
+          .error("System Error during update")
+          .build();
     }
-}
+  }
 
-  
-
-  public boolean deleteRestaurant(String id) {
-    Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+  public boolean deleteRestaurant(String email) {
+    Optional<Restaurant> restaurant = restaurantRepository.findByEmail(email);
     if (restaurant.isPresent()) {
-      restaurantRepository.deleteById(id);
+      restaurantRepository.delete(restaurant.get()); 
       return true;
     }
     return false;
@@ -167,39 +164,35 @@ public class RestaurantService {
   }
 
   // public List<Restaurant> getRestaurantLogo(String email) {
-  //   List<Restaurant> restaurants = restaurantRepository.findAllByEmail(email);
-  //   for (Restaurant restaurant : restaurants){
-  //     try{
-  //       String objectName = restaurant.getImage();
-  //       String signedUrl = generateShortenedSignedUrl(objectName);
-  //       restaurant.setSignedUrl(signedUrl);
-  //     } catch (Exception e){
-  //       log.error("Error generating signed URL: {}", e.getMessage());
-  //     }
-  //   }
-  //   return restaurants;
+  // List<Restaurant> restaurants = restaurantRepository.findAllByEmail(email);
+  // for (Restaurant restaurant : restaurants){
+  // try{
+  // String objectName = restaurant.getImage();
+  // String signedUrl = generateShortenedSignedUrl(objectName);
+  // restaurant.setSignedUrl(signedUrl);
+  // } catch (Exception e){
+  // log.error("Error generating signed URL: {}", e.getMessage());
+  // }
+  // }
+  // return restaurants;
   // }
 
-  public Restaurant getRestaurantByEmailImg(String email){
+  public Restaurant getRestaurantByEmailImg(String email) {
     Restaurant restaurant = restaurantRepository
-    .findByEmail(email)
-    .orElseThrow(() -> new RuntimeException("Restaurant not found for email: " + email)
-    );
+        .findByEmail(email)
+        .orElseThrow(() -> new RuntimeException("Restaurant not found for email: " + email));
 
     try {
       String objectName = restaurant.getImage();
       if (objectName != null && !objectName.isEmpty()) {
         String signedUrl = generateShortenedSignedUrl(objectName);
         restaurant.setSignedUrl(signedUrl);
-      }      
+      }
     } catch (Exception e) {
       log.error("Error generating signed URL: {}", e.getMessage());
     }
     return restaurant;
 
-
   }
-
-
 
 }
