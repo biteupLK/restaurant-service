@@ -30,30 +30,11 @@ public class RestaurentController {
 
   private final RestaurantService restaurantService;
 
-  @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ResponseEntity<RestaurentResponseDTO> createProducts(
-      @RequestPart("restaurant") String restaurantJson,
-      @RequestPart("image") MultipartFile image) throws JsonProcessingException {
-    ObjectMapper objectMapper = new ObjectMapper();
-
-    RestaurentRequestDTO req = objectMapper.readValue(
-      restaurantJson,
-        RestaurentRequestDTO.class);
-
-    RestaurentResponseDTO res = restaurantService.createRestaurant(req, image);
-    if (res.getError() != null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-    } else {
-      return ResponseEntity.status(HttpStatus.CREATED).body(res);
-    }
-  }
-
   @GetMapping("/checkRestaurant/{email}")
   public ResponseEntity<Boolean> checkIfRestaurantExists(@PathVariable String email) {
     boolean exists = restaurantService.checkIfRestaurantExists(email);
     return ResponseEntity.ok(exists);
   }
-  
 
   @GetMapping
   public List<Restaurant> getAllProducts() {
@@ -68,18 +49,43 @@ public class RestaurentController {
     return ResponseEntity.ok(restaurant);
   }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<RestaurentResponseDTO> updateRestaurant(
-      @PathVariable String id,
-      @RequestBody RestaurentRequestDTO requestDTO) {
-    RestaurentResponseDTO res = restaurantService.updateRestaurant(id, requestDTO);
+  @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<RestaurentResponseDTO> createProducts(
+      @RequestPart("restaurant") String restaurantJson,
+      @RequestPart("image") MultipartFile image) throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    RestaurentRequestDTO req = objectMapper.readValue(
+        restaurantJson,
+        RestaurentRequestDTO.class);
+
+    RestaurentResponseDTO res = restaurantService.createRestaurant(req, image);
     if (res.getError() != null) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     } else {
-      return ResponseEntity.ok(res);
+      return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
   }
 
+  @PutMapping(value = "/{email}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<RestaurentResponseDTO> updateRestaurant(
+      @PathVariable String email,
+      @RequestPart(value = "restaurant", required = true) String restaurantJson,
+      @RequestPart(value = "image", required = false) MultipartFile image) throws JsonProcessingException {
+      
+      ObjectMapper objectMapper = new ObjectMapper();
+      RestaurentRequestDTO requestDTO = objectMapper.readValue(restaurantJson, RestaurentRequestDTO.class);
+  
+      RestaurentResponseDTO res = restaurantService.updateRestaurant(email, requestDTO, image);
+      if (res.getError() != null) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+      } else {
+          return ResponseEntity.ok(res);
+      }
+  }
+
+
+  
   @DeleteMapping("/{id}")
   public ResponseEntity<String> deleteRestaurant(@PathVariable String id) {
     boolean deleted = restaurantService.deleteRestaurant(id);
@@ -91,11 +97,9 @@ public class RestaurentController {
   }
 
   @GetMapping("/getSignedUrl/{email}")
-  public ResponseEntity<Restaurant> getSignedUrl(@PathVariable String email){
+  public ResponseEntity<Restaurant> getSignedUrl(@PathVariable String email) {
     Restaurant restaurant = restaurantService.getRestaurantByEmailImg(email);
     return ResponseEntity.ok(restaurant);
   }
-
-
 
 }
