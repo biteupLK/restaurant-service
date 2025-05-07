@@ -106,37 +106,52 @@ public class RestaurantService {
         .orElseThrow(() -> new RuntimeException("Restaurant not found for id: " + restaurantEmail));
   }
 
-  public RestaurentResponseDTO updateRestaurant(String id, RestaurentRequestDTO req) {
-    Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
+  public RestaurentResponseDTO updateRestaurant(String email, RestaurentRequestDTO req, MultipartFile imageFile) {
+    try {
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findByEmail(email);
 
-    if (optionalRestaurant.isPresent()) {
-      Restaurant restaurant = optionalRestaurant.get();
-      restaurant.setName(req.getName());
-      restaurant.setDescription(req.getDescription());
-      restaurant.setEmail(req.getEmail());
-      restaurant.setPhoneNumber(req.getPhoneNumber());
-      restaurant.setPlaceId(req.getPlaceId());
-      restaurant.setCity(req.getCity());
-      restaurant.setState(req.getState());
-      restaurant.setZipCode(req.getZipCode());
-      restaurant.setAddress(req.getAddress());
+        if (!optionalRestaurant.isPresent()) {
+            return RestaurentResponseDTO.builder()
+                    .error("Restaurant not found with id: " + email)
+                    .build();
+        }
 
-      Location location = new Location();
-      location.setLat(req.getLatitude());
-      location.setLng(req.getLongitude());
-      restaurant.setLocation(location);
+        Restaurant restaurant = optionalRestaurant.get();
+        restaurant.setName(req.getName());
+        restaurant.setDescription(req.getDescription());
+        restaurant.setPhoneNumber(req.getPhoneNumber());
+        restaurant.setPlaceId(req.getPlaceId());
+        restaurant.setCity(req.getCity());
+        restaurant.setState(req.getState());
+        restaurant.setZipCode(req.getZipCode());
+        restaurant.setAddress(req.getAddress());
 
-      restaurantRepository.save(restaurant);
+        // Update location
+        Location location = new Location();
+        location.setLat(req.getLatitude());
+        location.setLng(req.getLongitude());
+        restaurant.setLocation(location);
 
-      return RestaurentResponseDTO.builder()
-          .message("Update successful")
-          .build();
-    } else {
-      return RestaurentResponseDTO.builder()
-          .error("Restaurant not found with id: " + id)
-          .build();
+        // Update image if new file is provided
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String imageUrl = imageUploaderService.uploadToGcs(bucketName, imageFile);
+            restaurant.setImage(imageUrl);
+        }
+
+        restaurantRepository.save(restaurant);
+
+        return RestaurentResponseDTO.builder()
+                .message("Update successful")
+                .build();
+    } catch (Exception e) {
+        log.error("Error while updating restaurant: {}", e.getMessage());
+        return RestaurentResponseDTO.builder()
+                .error("System Error during update")
+                .build();
     }
-  }
+}
+
+  
 
   public boolean deleteRestaurant(String id) {
     Optional<Restaurant> restaurant = restaurantRepository.findById(id);
